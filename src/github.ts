@@ -56,3 +56,62 @@ githubComposer.hears(githubRegexLink, async ctx => {
 		}
 	);
 });
+
+githubComposer.inlineQuery(githubRegexLink, async ctx => {
+	if (ctx.inlineQuery.from.id !== 946070039) return ctx.answerInlineQuery([]);
+
+	const match = githubRegexLink.exec(ctx.inlineQuery?.query!);
+	const groups = match?.groups;
+	if (!groups) return;
+
+	const repo = groups.repo!;
+	const path = groups.path!;
+
+	const firstLineNumber = parseInt(groups.first_line_number!) - 1;
+	const secondLineNumber = parseInt(groups.second_line_number!) || firstLineNumber + 1;
+
+	const contentUrl = `https://raw.githubusercontent.com/${repo}/${path}`;
+	const response = await fetch(contentUrl);
+	const content = await response.text();
+	const lines = content.split("\n");
+
+	if (secondLineNumber - firstLineNumber > 100 && lines.length > secondLineNumber) return ctx.answerInlineQuery([]);
+
+	let text = "";
+
+	for (let i = 0; i < lines.length; i++) {
+		if (i < firstLineNumber || i >= secondLineNumber) continue;
+
+		const line = lines[i];
+		text += `${line?.replace(/	/g, "    ")}\n`;
+	}
+
+	return ctx
+		.answerInlineQuery(
+			[
+				{
+					type: "article",
+					id: "github",
+					title: path?.split("/").slice(1).join("/").replace(/%2F/g, "/"),
+					description: `L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""}`,
+					input_message_content: {
+						message_text: [
+							`<code>${path?.split("/").slice(1).join("/").replace(/%2F/g, "/")}</code> — <b>(L${
+								firstLineNumber + 1
+							}${secondLineNumber ? `-L${secondLineNumber}` : ""})</b>` +
+								" | " +
+								`<b><a href="${contentUrl}">Link</a></b>`,
+							`<pre class="tg-pre-code">${safeSlice(text.slice(0, -1), 4090)
+								.replace(/</g, "&lt;")
+								.replace(/>/g, "&gt;")}</pre>`,
+						].join("\n"),
+						parse_mode: "HTML",
+					},
+				},
+			],
+			{
+				cache_time: 0,
+			}
+		)
+		.catch(() => {});
+});
