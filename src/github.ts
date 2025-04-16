@@ -115,3 +115,5 @@ githubComposer.inlineQuery(githubRegexLink, async ctx => {
 		)
 		.catch(() => {});
 });
+
+githubComposer.on("inline_query", async ctx => ctx.answerInlineQuery([]));
