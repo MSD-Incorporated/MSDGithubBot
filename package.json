@@ -14,7 +14,9 @@
 		"pm2:start": "pm2 start npm --ignore-watch=\"node_modules\" --name \"msdbot_github_bot\" -- start",
 		"pm2:bun_start": "pm2 start bun --ignore-watch=\"node_modules\" --name \"msdbot_github_bot\" -- bun:start",
 		"pm2:restart": "pm2 restart \"msdbot_github_bot\"",
-		"pm2:stop": "pm2 stop \"msdbot_github_bot\""
+		"pm2:stop": "pm2 stop \"msdbot_github_bot\"",
+		"build": "bun build --entrypoint ./src/**.ts --outdir dist --target bun",
+		"format": "prettier --write --cache './{.vscode,.github,src,test}/**/*.{mjs,ts,tsx,js,jsx,json,yml,yaml}'"
 	},
 	"dependencies": {
 		"@roziscoding/grammy-autoquote": "^2.0.8",
