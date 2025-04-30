@@ -1,5 +1,5 @@
 docker_build_bot:
-	docker build -t mased/msdbot_github_bot .
+	docker build -t mased/msdbot_github_telegram .
 
 docker_bot_api:
 	docker run \
@@ -13,8 +13,8 @@ docker_bot_api:
 
 docker_bot:
 	docker run \
-	--name msdbot_github_bot \
+	--name msdbot_github_telegram \
 	--network msdbot_internal_network \
 	--env-file .env \
 	-e NODE_ENV=production \
-	-d mased/msdbot_github_bot
+	-d mased/msdbot_github_telegram
