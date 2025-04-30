@@ -6,19 +6,19 @@
 	"type": "module",
 	"license": "MIT",
 	"private": true,
-	"dependencies": {
-		"@roziscoding/grammy-autoquote": "^2.0.8",
-		"grammy": "^1.35.1"
-	},
 	"scripts": {
 		"start": "node .",
 		"bun:start": "bun src/index.ts",
 		"bun:smol": "bun --smol src/index.ts",
 		"bun:watch": "bun --watch src/index.ts",
-		"pm2:start": "pm2 start npm --ignore-watch=\"node_modules\" --name \"msd_github_bot\" -- start",
-		"pm2:bun_start": "pm2 start bun --ignore-watch=\"node_modules\" --name \"msd_github_bot\" -- bun:start",
-		"pm2:restart": "pm2 restart \"msd_github_bot\"",
-		"pm2:stop": "pm2 stop \"msd_github_bot\""
+		"pm2:start": "pm2 start npm --ignore-watch=\"node_modules\" --name \"msdbot_github_bot\" -- start",
+		"pm2:bun_start": "pm2 start bun --ignore-watch=\"node_modules\" --name \"msdbot_github_bot\" -- bun:start",
+		"pm2:restart": "pm2 restart \"msdbot_github_bot\"",
+		"pm2:stop": "pm2 stop \"msdbot_github_bot\""
+	},
+	"dependencies": {
+		"@roziscoding/grammy-autoquote": "^2.0.8",
+		"grammy": "^1.35.1"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
